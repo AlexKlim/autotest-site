@@ -1,0 +1,9 @@
+%ul.tab_navigation  
+  - tab_menu.each do |tab|
+    %li
+      - if tab[:active]
+        %div
+          = tab[:text]
+
+      - else
+        = link_to tab[:text], tab[:url]

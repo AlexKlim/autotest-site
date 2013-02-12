@@ -1,0 +1,10 @@
+= simple_form_for timetable do |f|
+  %tr
+    %td
+      = timetable.automatedtest.name.capitalize
+    %td
+      = f.collection_check_boxes :days, week_days, :first, :last, checked: timetable.days
+    %td
+      = f.input :value, label: false, input_html: { size: 10 }
+    %td
+      = f.submit 'Save'

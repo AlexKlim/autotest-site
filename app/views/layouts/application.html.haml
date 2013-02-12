@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %title
+      = Autotest::CONFIG.title
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    
+  %body.pages
+    .header
+      .logo
+        = image_tag Autotest::CONFIG.link_to_logo, style: 'left: 3px; top: -2px;  position: absolute;'
+        .notified
+          %h1{style: 'font-size: 25px;'}
+            Do not close the window... ,)
+          %p
+            and
+          %p
+            we wil do project better!
+
+    .content
+      .content-wrapper
+        .border-wrapper
+          .main_content
+            .tabs-wrapper
+              = render partial: 'tab_menu', locals: {tab_menu: tab_menu}              
+
+            = yield
+
+    %div{style: 'padding-bottom: 80px'}
+      .footer
+        .bottom_footer
+              

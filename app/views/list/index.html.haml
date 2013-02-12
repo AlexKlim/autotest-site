@@ -1,0 +1,30 @@
+!!!
+%html
+  %head
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    
+  %body
+    %label
+      Reports for:
+    %form{:method => 'post', :action => 'reports'}
+      %input{:type => 'text', :readonly => 'true', :name => 'theDate', :value => @folder, :style => 'max-width: 160px;'}
+      %input{:type => 'button', :value => 'Date', :onclick => "displayCalendar(document.forms[0].theDate,'yyyy-mm-dd',this)"}
+      %button{:type => 'submit'}
+        View Reports
+      %ol
+        - begin
+          - Dir.new("#{Rails.root}/public/tests/#{@folder}").each do |x|
+            - if x[/.*\.erb/] != nil
+              %li
+                = link_to x, nightly_path(x, folder: @folder), target: '_blanck'
+                - begin
+                  - doc = Nokogiri::HTML(open("#{Rails.root}/public/tests/#{@folder}/#{x}"))
+                  - length = doc.xpath('//script[@type="text/javascript"]').length
+                  - label = doc.xpath('//script[@type="text/javascript"]')[length -1].content[/(\d*) scenario(.*)</][0..-2]
+                  - label.include?('failed') ? color = 'red' : color = 'green'
+                - rescue
+                  - color = 'red'
+                %label{:style => "float: right; color: #{color}"}
+                  =label
+        - rescue

@@ -1,0 +1,67 @@
+.context
+  %h4
+    TimeTable
+
+  .env
+    = simple_form_for(Environment.new) do |f|
+      = f.select :current, Environment.all.map(&:name), selected: Environment.current.first.name
+      = f.submit 'Change'
+
+  = simple_form_for :timetables_set, url: timetables_path, method: :put do |f|
+    %table
+      %tbody
+        %th
+          Test Name
+        %th
+          Day
+        %th
+          Time
+
+      %tr
+        %td
+          %i
+            Remove All Reports
+        %td
+        %td
+          %i
+            6:01pm
+
+      %tr
+        %td
+          %i
+            Update Code
+        %td
+        %td
+          %i
+            6:03pm
+
+      - @timetables_set.timetables.each do |table|
+        = f.fields_for(:timetables, table, index: table.id) do |table_form|
+          %tr
+            %td
+              = table.automatedtest.name.capitalize
+            %td
+              = table_form.fields_for(:days, week_days) do |d|
+                = d.collection_check_boxes :days, week_days, :first, :last, checked: table.days
+            %td
+              = table_form.input :value, label: false, input_html: { size: 10 }
+
+      %tr
+        %td
+          %i
+            Send Email
+        %td
+        %td
+          %i
+            7:40am
+
+      %tr
+        %td
+          %i
+            Create Report
+        %td
+        %td
+          %i
+            7:43am
+
+    = f.submit 'Save'
