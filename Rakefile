@@ -67,7 +67,7 @@ namespace :auto_test do
   end
 
   task send_mail: :environment do
-    system("cd ~/projects/sh-scripts && ./send_mail.sh #{ENV['HOST']")
+    system("cd ~/projects/sh-scripts && ./send_mail.sh #{ENV['HOST']}")
   end
   
 end
