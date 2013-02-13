@@ -64,21 +64,4 @@ AutomatedTestSite::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
-
-  config.action_mailer.default_url_options = { host: Autotest::CONFIG.default_url_options }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default charset: 'utf-8'
-
-  config.action_mailer.smtp_settings = {
-    address: Autotest::CONFIG.smtp_address,
-    port: Autotest::CONFIG.smtp_port,
-    domain: Autotest::CONFIG.smtp_domain,
-    authentication: 'plain',
-    enable_starttls_auto: true,
-    user_name: Autotest::CONFIG.user_name,
-    password: Autotest::CONFIG.password
-  }
-
 end

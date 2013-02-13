@@ -12,7 +12,7 @@ class ListController < ApplicationController
 
   def nightly
     report = params[:id] + '.erb'
-    render "%s/%s/%s/%s" % [Rails.root, Autotest::CONFIG.test_folderm, params[:folder], report], layout: false
+    render "%s/%s/%s/%s" % [Rails.root, Autotest::CONFIG.test_folder, params[:folder], report], layout: false
   end
 
   def reports

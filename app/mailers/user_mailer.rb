@@ -2,19 +2,17 @@ require 'net/http'
 require 'uri'
 
 class UserMailer < ActionMailer::Base
-  default from: 'notifications@autotest-sophia.com'
+  default from: Autotest::CONFIG.mail_from
 
   def send_email
     host = Environment.current.first.name
     body = "Result Report for\n\n#{scenarios}"
 
-    mail(to: Autotest::CONFIG.recipient, subject: Autotest::CONFIG.subject,
-      body: body
-    )
+    mail(to: Autotest::CONFIG.mail_recipient, subject: Autotest::CONFIG.mail_subject, body: body)
   end
 
   private
-
+  
   def scenarios
     scenarios = ''
     path = File.expand_path(Autotest::CONFIG.auto_test)

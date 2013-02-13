@@ -2,3 +2,17 @@ title: Example Title
 link_to_logo: http://example.png
 test_folder: public/tests/
 auto_test: ~/path/to/autotest
+
+#mail settings
+default_url_options: default_url_options
+smtp_address: address
+smtp_port: port
+smtp_domain: domain
+smtp_user_name: user_name
+smtp_password: password
+
+#mail
+mail_from: notification@example.com
+mail_recipient: recipient
+mail_subject: subject
+
