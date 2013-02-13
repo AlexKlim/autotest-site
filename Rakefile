@@ -6,49 +6,49 @@ require File.expand_path('../config/application', __FILE__)
 
 AutomatedTestSite::Application.load_tasks
 
+namespace :update do
 
-namespace :add do
-  task env: :environment do
-    %w(prodtest prodstaging lean).each do |env|
-      Environment.create! name: env
+  task tags: [:environment, :code] do
+    path = File.expand_path("#{Autotest::CONFIG.auto_test}/.hgtags")
+    Tag.delete_all
+    Tag.create! name: 'develop'
+
+    file = []
+    File.open(path).each_line do |line|
+      file << line
+    end
+
+    file.reverse.each do |line|
+      tag = line[/release_.*/]
+      unless tag.nil?
+        Tag.create! name: tag
+      end
     end
   end
 
   task tests: :environment do
-    %w(smoke smokeForTesters acceptance).each do |test|
-      tt = Timetable.create! days: ['']
-      Automatedtest.create! name: test, timetable: tt
+    path = File.expand_path("#{Autotest::CONFIG.auto_test}/features/functionality/")
+    folders = Dir[path + '/*'].map { |a| File.basename(a).split('_features')[0] }
+
+    automatedtests = Automatedtest.all.map(&:name)
+    folders.each do |name|
+      unless automatedtests.include? name
+        tt = Timetable.create! days: ['']
+        Automatedtest.create! name: name, timetable: tt
+      end
     end
   end
 
-  task tags: :environment do
-    %w(develop release_175 release_174 release_173 release_171).each do |tag|
-      Tag.create! name: tag
-    end
+  task code: :environment do
+    system("cd #{Autotest::CONFIG.auto_test} && hg pull --rebase && hg update")
   end
 
-end
-
-task update_test: :environment do
-  path = File.expand_path("#{Autotest::CONFIG.auto_test}/features/functionality/")
-  folders = Dir[path + '/*'].map { |a| File.basename(a).split('_features')[0] }
-
-  folders.each do |name|
-    unless Automatedtest.all.map(&:name).include? name
-      tt = Timetable.create! days: ['']
-      Automatedtest.create! name: name, timetable: tt
-    end
-  end
 end
 
 namespace :auto_test do
 
   task run: :environment do
     system("cd #{Autotest::CONFIG.auto_test} && rake cucumber_test P=#{ENV['P']} HOST=#{Environment.current.first.name} &")
-  end
-
-  task update_code: :environment do
-    system("cd #{Autotest::CONFIG.auto_test} && hg pull --rebase && hg update")
   end
 
   task create_report: :environment do

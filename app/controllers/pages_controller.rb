@@ -47,6 +47,16 @@ class PagesController < ApplicationController
     render "#{Rails.root}/public/update_code.log"
   end
 
+  def update_test
+    system('rake update:tests &')
+    redirect_to root_path
+  end
+
+  def update_tag
+    system('rake update:tags &')
+    redirect_to root_path
+  end
+
   def stop_test
     system('killall -9 cucumber')
     system('killall -9 firefox-bin')

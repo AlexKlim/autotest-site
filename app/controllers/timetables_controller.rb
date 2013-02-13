@@ -15,7 +15,6 @@ class TimetablesController < ApplicationController
   private
 
   def init
-    puts params
     @timetables_set = TimeTableSet.new(params[:timetables_set])
   end
 

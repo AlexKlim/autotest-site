@@ -16,7 +16,7 @@ every :day, at: '6:01pm' do
 end
 
 every :day, at: '6:03pm' do
-  rake 'auto_test:update_code'
+  rake 'update:code'
 end
 
 every :day, at: '7:40am' do
