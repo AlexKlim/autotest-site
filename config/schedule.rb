@@ -6,7 +6,7 @@ Timetable.all.each do |tt|
   days.delete(days[-1])
 
   every days.map(&:to_sym), at: tt.value do
-    rake "auto_test:run HOST=#{Environment.current.first.name} P=#{tt.automatedtest.name}"
+    rake "auto_test:run P=#{tt.automatedtest.name}"
   end
 
 end
@@ -20,7 +20,7 @@ every :day, at: '6:03pm' do
 end
 
 every :day, at: '7:40am' do
-  rake "auto_test:send_mail HOST=#{Environment.current.first.name}"
+  rake 'auto_test:send_mail'
 end
 
 every :day, at: '7:43am' do

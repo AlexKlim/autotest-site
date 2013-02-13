@@ -44,7 +44,7 @@ end
 namespace :auto_test do
 
   task run: :environment do
-    system("cd #{Autotest::CONFIG.auto_test} && rake auto:test P=#{ENV['P']} HOST=#{ENV['HOST']} &")  
+    system("cd #{Autotest::CONFIG.auto_test} && rake cucumber_test P=#{ENV['P']} HOST=#{Environment.current.first.name} &")
   end
 
   task update_code: :environment do
@@ -52,7 +52,7 @@ namespace :auto_test do
   end
 
   task create_report: :environment do
-    folder = "%s/%s/%s" % [Rails.root, Autotest::CONFIG.test_folder, "#{Time.now.year}-#{Time.now.month}-#{Time.now.day}"]    
+    folder = "%s/%s/%s" % [Rails.root, Autotest::CONFIG.test_folder, "#{Time.now.year}-#{Time.now.month}-#{Time.now.day}"]
     Dir.mkdir folder
     path = File.expand_path(Autotest::CONFIG.test_folder)
     Dir.new(path).each { |x|
@@ -67,7 +67,7 @@ namespace :auto_test do
   end
 
   task send_mail: :environment do
-    system("cd ~/projects/sh-scripts && ./send_mail.sh #{ENV['HOST']}")
+    UserMailer.send_email.deliver
   end
-  
+
 end

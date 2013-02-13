@@ -38,12 +38,7 @@ ActiveRecord::Schema.define(:version => 20130208143911) do
 
   create_table "environments", :force => true do |t|
     t.string  "name"
-    t.boolean "current", :default => false
-  end
-
-  create_table "pages", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.boolean "current", :default => true
   end
 
   create_table "tags", :force => true do |t|
@@ -53,7 +48,6 @@ ActiveRecord::Schema.define(:version => 20130208143911) do
   end
 
   create_table "timetables", :force => true do |t|
-    t.string "var"
     t.string "value"
     t.string "days"
   end

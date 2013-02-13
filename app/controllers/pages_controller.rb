@@ -6,7 +6,7 @@ class PagesController < ApplicationController
   def run_test
     host = params[:environment][:test][:env]
     test = params[:environment][:test][:test]
-    report = "#{host}_#{test}_report.erb"    
+    report = "#{host}_#{test}_report.erb"
 
     path_to_auto_test = "%s/%s" % [File.expand_path(Autotest::CONFIG.auto_test), report]
     File.delete(path_to_auto_test) if FileTest.exists?(path_to_auto_test)
@@ -14,7 +14,7 @@ class PagesController < ApplicationController
     path_to_test = "%s/%s/%s" % [Rails.root, Autotest::CONFIG.test_folder, report]
     File.delete(path_to_test) if FileTest.exists?(path_to_test)
     File.new(path_to_test, 'a')
-    
+
     if Environment.all.map(&:name).include? host
       case test
       when 'smokeForTesters'
@@ -23,7 +23,7 @@ class PagesController < ApplicationController
         system("cd #{Autotest::CONFIG.auto_test} && rake auto:test P=#{test} HOST=#{host} &")
       end
     end
-    
+
     redirect_to log_path(test_host: host, test: test)
   end
 
@@ -31,7 +31,7 @@ class PagesController < ApplicationController
     host = params[:test_host]
     test = params[:test]
     report = "#{host}_#{test}_report.erb"
-    
+
     path_to_auto_test = "%s/%s" % [File.expand_path(Autotest::CONFIG.auto_test), report]
     path_to_test = "%s/%s/%s" % [Rails.root, Autotest::CONFIG.test_folder, report]
     FileUtils.cp path_to_auto_test, path_to_test if FileTest.exists?(path_to_auto_test)
@@ -41,7 +41,7 @@ class PagesController < ApplicationController
   end
 
   def update_code
-    tag = params[:test][:tag]    
+    tag = params[:test][:tag]
     system("cd #{Autotest::CONFIG.auto_test} && hg up #{tag} > #{Rails.root}/public/update_code.log")
 
     render "#{Rails.root}/public/update_code.log"
