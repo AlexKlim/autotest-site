@@ -1,6 +1,6 @@
 title: Example Title
 link_to_logo: http://example.png
-test_folder: public/tests/
+test_folder: public/tests
 auto_test: ~/path/to/autotest
 
 #mail settings

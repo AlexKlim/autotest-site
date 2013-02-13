@@ -16,4 +16,5 @@
 tmp/
 .DS_Store
 *.erb
+config/config.yml
 
