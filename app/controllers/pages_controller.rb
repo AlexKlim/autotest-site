@@ -15,13 +15,8 @@ class PagesController < ApplicationController
     File.delete(path_to_test) if FileTest.exists?(path_to_test)
     File.new(path_to_test, 'a')
 
-    if Environment.all.map(&:name).include? host
-      case test
-      when 'smokeForTesters'
-        system("cd #{Autotest::CONFIG.auto_test} && rake auto:test_smoke P=#{test} HOST=#{host} &")
-      else
-        system("cd #{Autotest::CONFIG.auto_test} && rake auto:test P=#{test} HOST=#{host} &")
-      end
+    if Environment.all.map(&:name).include? host      
+      system("rake auto_test:separate_test P=#{test} HOST=#{host} &")
     end
 
     redirect_to log_path(test_host: host, test: test)

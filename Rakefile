@@ -48,18 +48,19 @@ end
 namespace :auto_test do
 
   task run: :environment do
-    system("cd #{Autotest::CONFIG.auto_test} && rake cucumber_test P=#{ENV['P']} HOST=#{Environment.current.first.name} &")
+    run_task = (ENV['P'] == 'smokeForTesters' ? 'smoke_for_testers' : "cucumber_test P=#{ENV['P']}")
+    system("cd #{Autotest::CONFIG.auto_test} && rake #{run_task} HOST=#{ENV['HOST']}")
   end
 
   task create_report: :environment do
     folder = "%s/%s/%s" % [Rails.root, Autotest::CONFIG.test_folder, "#{Time.now.year}-#{Time.now.month}-#{Time.now.day}"]
     Dir.mkdir folder
     path = File.expand_path(Autotest::CONFIG.auto_test)
-    Dir.new(path).each { |x|
+    Dir.new(path).each do |x|
       if x[/.*\.erb$/] != nil
         FileUtils.cp("#{path}/#{x}", folder)
       end
-    }
+    end
   end
 
   task remove_tests: :environment do
@@ -68,6 +69,10 @@ namespace :auto_test do
 
   task send_mail: :environment do
     UserMailer.send_email.deliver
+  end
+
+  task separate_test: [:environment, :run] do
+    UserMailer.send_separate_report(ENV['HOST'], ENV['P']).deliver
   end
 
 end

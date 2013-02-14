@@ -3,10 +3,16 @@ require 'uri'
 
 class UserMailer < ActionMailer::Base
   default from: Autotest::CONFIG.mail_from
+  PATH = File.expand_path(Autotest::CONFIG.auto_test)
 
   def send_email
-    host = Environment.current.first.name
     body = "Result Report for\n\n#{scenarios}"
+    mail(to: Autotest::CONFIG.mail_recipient, subject: Autotest::CONFIG.mail_subject, body: body)
+  end
+
+  def send_separate_report(host, test)
+    report = "#{host}_#{test}_report.erb"
+    body = "Result Report for\n\n#{separate_scenario(report)}"
 
     mail(to: Autotest::CONFIG.mail_recipient, subject: Autotest::CONFIG.mail_subject, body: body)
   end
@@ -14,11 +20,10 @@ class UserMailer < ActionMailer::Base
   private
   
   def scenarios
-    scenarios = ''
-    path = File.expand_path(Autotest::CONFIG.auto_test)
-    Dir.new(path).each do |file|
+    scenarios = ''  
+    Dir.new(PATH).each do |file|
       if File.extname(file) == '.erb'
-        doc = Nokogiri::HTML(open("#{path}/#{file}"))
+        doc = Nokogiri::HTML(open("#{PATH}/#{file}"))
         length = doc.xpath('//script[@type="text/javascript"]').length
         scenarios += "* #{file.split('.')[0].capitalize}: "
 
@@ -32,6 +37,20 @@ class UserMailer < ActionMailer::Base
     end
 
     scenarios
+  end
+
+  def separate_scenario(report)
+    scenario = ''
+    doc = Nokogiri::HTML(open("#{PATH}/#{report}"))
+    length = doc.xpath('//script[@type="text/javascript"]').length
+    scenario += "* #{report.split('.')[0].capitalize}: "
+
+    begin
+      scenario += doc.xpath('//script[@type="text/javascript"]')[length -1].content[/(\d*) scenarios (.*)</][0..-2]
+    rescue
+    end
+
+    scenario
   end
 
 end
