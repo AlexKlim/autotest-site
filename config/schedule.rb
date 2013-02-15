@@ -6,7 +6,7 @@ Timetable.all.each do |tt|
   days.delete(days[-1])
 
   every days.map(&:to_sym), at: tt.value do
-    rake "auto_test:run P=#{tt.automatedtest.name} HOST=#{Environment.current.first.name} &"
+    rake "auto_test:run P=#{tt.automatedtest.name} HOST=#{Environment.current.first.name}"
   end
 
 end
