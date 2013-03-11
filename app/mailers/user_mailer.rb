@@ -12,8 +12,8 @@ class UserMailer < ActionMailer::Base
 
   def send_separate_report(host, test)
     report = "#{host}_#{test}_report.erb"
-    body = "Result Report for\n\n#{separate_scenario(report)}"
-
+    body = "\n\nResult Report for\n\n#{separate_scenario(report)}"
+    attachments[report] = File.read("#{Autotest::CONFIG.test_folder}/#{report}")
     mail(to: Autotest::CONFIG.mail_recipient, subject: Autotest::CONFIG.mail_subject, body: body)
   end
 
