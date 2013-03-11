@@ -19,7 +19,7 @@ namespace :update do
     end
 
     file.reverse.each do |line|
-      tag = line[/release_.*/]
+      tag = line[/(lean|release_).*/]
       unless tag.nil?
         Tag.create! name: tag
       end
