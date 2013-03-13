@@ -1,7 +1,7 @@
 %label
   Additional settings:
 
-= simple_form_for Environment.new, url: update_code_path do |f|
+= simple_form_for :environment, url: update_code_path, method: :post do |f|
   = simple_fields_for :test do |sf|
     = sf.select :tag, Tag.all.map(&:name)
 

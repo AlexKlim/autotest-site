@@ -7,10 +7,10 @@
   %body
     %label
       Reports for:
-    %form{:method => 'post', :action => 'reports'}
-      %input{:type => 'text', :readonly => 'true', :name => 'theDate', :value => @folder, :style => 'max-width: 160px;'}
-      %input{:type => 'button', :value => 'Date', :onclick => "displayCalendar(document.forms[0].theDate,'yyyy-mm-dd',this)"}
-      %button{:type => 'submit'}
+    %form{method: 'post', action: 'reports'}
+      %input{type: 'text', readonly: 'true', name: 'theDate', value: @folder, style: 'max-width: 160px;'}
+      %input{type: 'button', value: 'Date', onclick: "displayCalendar(document.forms[0].theDate,'yyyy-mm-dd',this)"}
+      %button{type: 'submit'}
         View Reports
       %ol
         - begin
@@ -25,6 +25,6 @@
                   - label.include?('failed') ? color = 'red' : color = 'green'
                 - rescue
                   - color = 'red'
-                %label{:style => "float: right; color: #{color}"}
+                %label{style: "float: right; color: #{color}"}
                   =label
         - rescue

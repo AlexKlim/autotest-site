@@ -3,7 +3,7 @@
     TimeTable
 
   .env
-    = simple_form_for(Environment.new) do |f|
+    = simple_form_for(:environment) do |f|
       = f.select :current, Environment.all.map(&:name), selected: Environment.current.first.name
       = f.submit 'Change'
 

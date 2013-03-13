@@ -54,9 +54,13 @@ class PagesController < ApplicationController
 
   def stop_test
     system('killall -9 cucumber')
-    system('killall -9 firefox-bin')
+    system('killall -9 firefox')
 
     redirect_to root_path
+  end
+
+  def not_found
+    render file: "#{Rails.root}/public/404.html", status: 404, layout: false
   end
 
 end

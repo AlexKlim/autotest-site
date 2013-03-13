@@ -1,4 +1,4 @@
-= simple_form_for(Environment.new, url: run_test_path) do |f|  
+= simple_form_for(:environment, url: run_test_path) do |f|  
   = f.simple_fields_for :test do |sf|
     = sf.label 'Env:'
     = sf.select :env, Environment.all.map(&:name)
