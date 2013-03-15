@@ -8,7 +8,7 @@ class TimetablesController < ApplicationController
 
   def update
     @timetables_set.save!
-    Timetable.send_cron_later
+    Timetable.send_cron_later    
     redirect_to edit_timetables_path
   end
 
