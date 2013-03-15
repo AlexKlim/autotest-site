@@ -76,3 +76,7 @@ namespace :auto_test do
   end
 
 end
+
+task start_delayed: :environment do
+  system "RAILS_ENV=production script/delayed_job start"
+end

@@ -26,3 +26,7 @@ end
 every :day, at: '7:43am' do
   rake 'auto_test:create_report'
 end
+
+every :reboot do
+  rake 'start_delayed'
+end
